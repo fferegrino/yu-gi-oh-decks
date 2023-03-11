@@ -1,6 +1,7 @@
-name: Weekly dataset download
+name: Daily dataset download
 
 on:
+  workflow_dispatch:
   schedule:
   - cron: "0 11 * * *"
 
