@@ -1,0 +1,21 @@
+{
+    "title":"Yu-Gi-Oh! Decks",
+    "subtitle":"All the Yu-Gi-Oh! decks available at https://ygoprodeck.com/",
+    "description":"Information downloaded from https://ygoprodeck.com/.\n\nThe literal and graphical information presented on this dataset Yu-Gi-Oh!, including card images, the attribute, level/rank and type symbols, and card text, is copyright of 4K Media Inc, a subsidiary of Konami Digital Entertainment, Inc.",
+    "id":"ioexception/yugioh-decks",
+    "licenses":[
+        {
+            "name":"CC-BY-SA-3.0"
+        }
+    ],
+    "resources":[
+    ],
+    "keywords":[
+        "Arts and Entertainment",
+        "Games",
+        "Anime and Manga",
+        "Board Games",
+        "Card Games",
+        "Tabular Data"
+    ]
+}
