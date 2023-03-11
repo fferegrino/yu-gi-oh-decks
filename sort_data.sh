@@ -1,11 +1,24 @@
 #!/bin/bash
 
-# change directory to the data folder
 cd data
 
-# loop through all files in the folder
-for file in *
+for file in *.csv
 do
-  # sort the lines of the file and overwrite the original file
-  sort "$file" -o "$file"
+  # create temporary file for sorting
+  tmpfile=$(mktemp)
+
+  # extract the header row to a separate file
+  head -n 1 "$file" > header.csv
+
+  # sort the remaining rows numerically
+  tail -n +2 "$file" | sort -n > "$tmpfile"
+
+  # concatenate the header row and sorted rows into a new file
+  cat header.csv "$tmpfile" > sorted.csv
+
+  # overwrite the original file with the sorted output
+  mv sorted.csv "$file"
+
+  # delete temporary files
+  rm header.csv "$tmpfile"
 done
