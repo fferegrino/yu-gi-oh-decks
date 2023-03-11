@@ -75,7 +75,7 @@ for offset in range(0, MAXIMUM_PAGES, PAGE_SIZE):
         deck['deck_num'] = int(deck.pop('deckNum'))
         MINIMUM_CURRENT_DECK_NUM = min(MINIMUM_CURRENT_DECK_NUM, deck['deck_num'])
         MAXIMUM_CURRENT_DECK_NUM = max(MAXIMUM_CURRENT_DECK_NUM, deck['deck_num'])
-        if MINIMUM_CURRENT_DECK_NUM < LAST_DECK_NUM:
+        if MINIMUM_CURRENT_DECK_NUM <= LAST_DECK_NUM:
             break
 
         file_number = deck['deck_num'] // RECORDS_PER_FILE
@@ -85,6 +85,11 @@ for offset in range(0, MAXIMUM_PAGES, PAGE_SIZE):
             deck['ts_edit_date'] = QUERY_TS - human_to_seconds_ago(deck.get('edit_date'))
         else:
             deck['ts_edit_date'] = None
+
+        deck['deck_description'] = deck['deck_description'].replace('\n', ' ')
+        if deck['deck_excerpt']:
+            deck['deck_excerpt'] = deck['deck_excerpt'].replace('\n', ' ')
+
         already_exists = corresponding_file_name.exists()
         with open(corresponding_file_name, "a") as w:
             writer = csv.DictWriter(w, fieldnames=CSV_KEYS, extrasaction='ignore')
@@ -92,7 +97,7 @@ for offset in range(0, MAXIMUM_PAGES, PAGE_SIZE):
                 writer.writeheader()
             writer.writerow(deck)
     time.sleep(SECONDS_WAIT)
-    if MINIMUM_CURRENT_DECK_NUM < LAST_DECK_NUM:
+    if MINIMUM_CURRENT_DECK_NUM <= LAST_DECK_NUM:
         print("Reached last deck number.")
         break
 
