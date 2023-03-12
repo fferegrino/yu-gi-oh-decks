@@ -30,8 +30,8 @@ jobs:
         git add data/
         git diff --quiet && git diff --staged --quiet || git commit -m "$msg"
         git push
-#    - name: Upload data to Kaggle
-#      env:
-#        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
-#        KAGGLE_USERNAME: ioexception
-#      run: python upload_kaggle.py
+    - name: Upload data to Kaggle
+      env:
+        KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
+        KAGGLE_USERNAME: ioexception
+      run: python upload_kaggle.py
