@@ -50,7 +50,7 @@ def get_decks_for_page(offset, limit = PAGE_SIZE):
 
 QUERY_TS = int(time.time())
 
-RECORDS_PER_FILE = 1000
+RECORDS_PER_FILE = 10000
 
 LAST_DECK_NUM = get_last_deck_num()
 # Maximum integer available in 32-bit systems
@@ -79,16 +79,16 @@ for offset in range(0, MAXIMUM_PAGES, PAGE_SIZE):
             break
 
         file_number = deck['deck_num'] // RECORDS_PER_FILE
-        corresponding_file_name = data_dir / f"{file_number:07}.csv"
+        corresponding_file_name = data_dir / f"{file_number:08}.csv"
         deck['ts_submit_date'] = QUERY_TS - human_to_seconds_ago(deck.get('submit_date'))
         if deck.get('edit_date'):
             deck['ts_edit_date'] = QUERY_TS - human_to_seconds_ago(deck.get('edit_date'))
         else:
             deck['ts_edit_date'] = None
 
-        deck['deck_description'] = deck['deck_description'].replace('\n', ' ')
+        deck['deck_description'] = deck['deck_description'].replace('\n', ' ').replace('\r', '').strip()
         if deck['deck_excerpt']:
-            deck['deck_excerpt'] = deck['deck_excerpt'].replace('\n', ' ')
+            deck['deck_excerpt'] = deck['deck_excerpt'].replace('\n', ' ').replace('\r', '').strip()
 
         already_exists = corresponding_file_name.exists()
         with open(corresponding_file_name, "a") as w:
