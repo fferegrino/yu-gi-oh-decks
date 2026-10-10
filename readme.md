@@ -2,5 +2,7 @@
 
 # Yu-Gi-Oh!
 
-A dataset downloaded weekly from [https://ygoprodeck.com/](https://ygoprodeck.com/) and [replicated to Kaggle](https://www.kaggle.com/datasets/ioexception/yugioh-decks)
+A dataset downloaded daily from [https://ygoprodeck.com/](https://ygoprodeck.com/) and [published on Kaggle](https://www.kaggle.com/datasets/ioexception/yugioh-decks).
+
+The data lives only on Kaggle. Each run of [kaggle-dataset-refresh](https://github.com/fferegrino/kaggle-dataset-refresh) downloads the latest version into `data/`, appends new decks with `download.py`, and uploads a new version.
 
