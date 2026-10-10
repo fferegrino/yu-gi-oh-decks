@@ -2,6 +2,12 @@ name: Daily dataset download
 
 on:
   workflow_dispatch:
+    inputs:
+      source:
+        description: Where to read the current dataset from
+        type: choice
+        options: [huggingface, kaggle]
+        default: huggingface
   schedule:
   - cron: "0 11 * * *"
 
@@ -18,10 +24,31 @@ jobs:
     timeout-minutes: 60
     steps:
     - uses: actions/checkout@v7
-    - uses: fferegrino/kaggle-dataset-refresh@v1
+    - uses: fferegrino/dataset-sync/fetch@v1
       with:
-        dataset: ioexception/yugioh-decks
-        command: python download.py
+        # Scheduled runs have no inputs, so they always read from Hugging Face.
+        from: ${{ inputs.source || 'huggingface' }}
+        huggingface-dataset: fferegrino/yugioh-decks
+        kaggle-dataset: ioexception/yugioh-decks
+        kaggle-username: ioexception
+        kaggle-key: ${{ secrets.KAGGLE_KEY }}
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v7
+      with:
+        python-version: "3.13"
+    - name: Download new decks
+      run: |
+        python -m pip install --upgrade pip==26.2.1
+        pip install -r requirements.txt
+        python download.py
+    - uses: fferegrino/dataset-sync/publish@v1
+      with:
+        huggingface-dataset: fferegrino/yugioh-decks
+        huggingface-card: dataset-card.md
+        kaggle-dataset: ioexception/yugioh-decks
+        kaggle-metadata: dataset-metadata.json
         # Decks are only ever appended, so a run that rewrites existing rows is a bug, not an update.
         append-only: "*.csv"
+        huggingface-token: ${{ secrets.HF_TOKEN }}
+        kaggle-username: ioexception
         kaggle-key: ${{ secrets.KAGGLE_KEY }}
