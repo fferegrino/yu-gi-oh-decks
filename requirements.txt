@@ -1,2 +1,2 @@
-kaggle
-requests
+kaggle==2.2.4
+requests==2.34.2
